@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 mongoose.connect("mongodb://localhost:27017/course-selling-app")
-const ObjectId  = mongoose.Types.ObjectId
+const ObjectId = mongoose.Types.ObjectId
 const userSchema = new Schema({
     firstname: {
         type: String,
@@ -22,7 +22,7 @@ const userSchema = new Schema({
         maxLength: [40, "Your name cannot exceed 40 characters"],
         unique: true,
         lowercase: true,
-       
+
     },
     password: {
         type: String,
@@ -51,12 +51,12 @@ const adminSchema = new Schema({
         maxLength: [40, "Your name cannot exceed 40 characters"],
         unique: true,
         lowercase: true,
-       
+
     },
     password: {
         type: String,
         required: [true, "Please provide password"],
-        maxLength: [16, "Your name cannot exceed 8 characters"],
+        maxLength: [200, "Your name cannot exceed 8 characters"],
         trim: true,
     },
 })

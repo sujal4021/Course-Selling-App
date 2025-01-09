@@ -4,7 +4,7 @@ const userRouter = Router();
 const { UserModel } = require("../db");
 const z = require("zod");
 const jwt = require("jsonwebtoken");
-const JWT_USER_PASSWORD = "DSADA"
+// const JWT_USER_PASSWORD 
 userRouter.post("/signup", async (req, res) => {
     const { email, password, firstname, lastname } = req.body;
 
