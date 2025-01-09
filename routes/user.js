@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const userRouter = Router();
 const { UserModel } = require("../db");
 const z = require("zod");
-
+const jwt = require("jsonwebtoken");
+const JWT_USER_PASSWORD = "DSADA"
 userRouter.post("/signup", async (req, res) => {
     const { email, password, firstname, lastname } = req.body;
 
@@ -44,13 +45,22 @@ userRouter.post("/signin", async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Compare the provided password with the stored hashed password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid password" });
         }
+        if (user) {
+            const token = jwt.sign({
+                id: user._id
+            }, JWT_USER_PASSWORD)
+            res.json({ token: token });
+        }
+        else {
+            res.json({
+                message: "Incorrect Credentials"
+            })
+        }
 
-        res.json({ message: "Signin successful" });
 
     } catch (e) {
         res.status(400).json({
