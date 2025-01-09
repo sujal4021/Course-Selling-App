@@ -36,8 +36,29 @@ userRouter.post("/signup", async (req, res) => {
 });
 
 userRouter.post("/signin", async (req, res) => {
-    res.json({ message: "Signin logic here" });
+    const { email, password } = req.body;
+    try {
+        // Find the user by email
+        const user = await UserModel.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Compare the provided password with the stored hashed password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid password" });
+        }
+
+        res.json({ message: "Signin successful" });
+
+    } catch (e) {
+        res.status(400).json({
+            error: e instanceof z.ZodError ? e.errors : e.message,
+        });
+    }
 });
+
 
 userRouter.get("/purchases", (req, res) => {
     res.json({
