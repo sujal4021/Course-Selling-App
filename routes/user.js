@@ -1,47 +1,50 @@
-const { Router } = require("express")
-const bcrypt = require("bcrypt")
+const { Router } = require("express");
+const bcrypt = require("bcrypt");
 const userRouter = Router();
-const { UserModel } = require("../db")
+const { UserModel } = require("../db");
 const z = require("zod");
-const { mongoose } = require("mongoose");
-
 
 userRouter.post("/signup", async (req, res) => {
-    const { email, password, firstname, lastname } = req.body
-    // password hashing 
-    const salt = await bcrypt.genSalt(5)
-    const hashedpassword = await bcrypt.hash(password, salt)
+    const { email, password, firstname, lastname } = req.body;
 
-    // zod input schema
-    const user = z.object({
-        email: z.string().min(4).max(15),
-        hashedpassword: z.string().min(3).max(100)
-    })
+    // Define Zod schema for input validation
+    const userInputSchema = z.object({
+        firstname: z.string().min(1).max(50),
+        lastname: z.string().min(1).max(50),
+        email: z.string().email().min(4).max(50),
+        password: z.string().min(6).max(200),
+    });
+
     try {
+        userInputSchema.parse({ firstname, lastname, email, password });
+        const salt = await bcrypt.genSalt(5);
+        const hashedpassword = await bcrypt.hash(password, salt);
+        // Save user to the database
         await UserModel.create({
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
-            hashedpassword: hashedpassword
-        })
+            firstname,
+            lastname,
+            email,
+            password: hashedpassword,
+        });
+
         res.status(201).json({ message: "User created successfully" });
-
+    } catch (e) {
+        res.status(400).json({
+            error: e instanceof z.ZodError ? e.errors : e.message,
+        });
     }
-    catch (e) {
-        res.json({
-            error: e.message
-        })
-    }
-})
-userRouter.post("/signin", (req, res) => {
+});
 
-})
+userRouter.post("/signin", async (req, res) => {
+    res.json({ message: "Signin logic here" });
+});
 
 userRouter.get("/purchases", (req, res) => {
     res.json({
-        message: "hello"
-    })
-})
+        message: "hello",
+    });
+});
+
 module.exports = {
     userRouter: userRouter
-}
+};

@@ -22,15 +22,12 @@ const userSchema = new Schema({
         maxLength: [40, "Your name cannot exceed 40 characters"],
         unique: true,
         lowercase: true,
-        match: [
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            "Please provide a valid email"
-        ]
+       
     },
     password: {
         type: String,
         required: [true, "Please provide password"],
-        maxLength: [16, "Your name cannot exceed 8 characters"],
+        maxLength: [200, "Your name cannot exceed 8 characters"],
         trim: true,
     },
 })
@@ -54,10 +51,7 @@ const adminSchema = new Schema({
         maxLength: [40, "Your name cannot exceed 40 characters"],
         unique: true,
         lowercase: true,
-        match: [
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            "Please provide a valid email"
-        ]
+       
     },
     password: {
         type: String,
