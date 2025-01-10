@@ -3,10 +3,10 @@ const {JWT_USER_PASSWORD} = require("../config")
 
 function userMiddleware (req,res,next){
     const token = req.headers.token
-    const decode = jwt.verify(token,JWT_USER_PASSWORD)
+    const decoded = jwt.verify(token,JWT_USER_PASSWORD)
 }
 
-if(decode){
+if(decoded){
     req.userId = decode.id;
     next()
 }

@@ -1,8 +1,8 @@
-const JWT_ADMIN_PASSWORD = "ASASAS123" 
-const JWT_USER_PASSWORD = "DSADSA123"
+const JWT_ADMIN_PASSWORD = process.env.JWT_ADMIN_PASSWORD
+const JWT_USER_PASSWORD = process.env.JWT_USER_PASSWORD
 
 
-module.exports ={
+module.exports = {
     JWT_ADMIN_PASSWORD,
     JWT_USER_PASSWORD
 }
